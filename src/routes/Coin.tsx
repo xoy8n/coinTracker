@@ -1,7 +1,8 @@
 import { Switch, Route, useParams} from "react-router"
-import styled from "styled-components"
 import {useState, useEffect} from "react";
 import {Link, useLocation} from "react-router-dom";
+import axios from "axios";
+import styled from "styled-components"
 import Price from "./Price"
 import Chart from "./Chart"
 
@@ -151,18 +152,40 @@ function Coin() {
     const { state } = useLocation<RouteState>();
     const [info, setInfo] = useState<IInfoData>();
     const [priceInfo, setPriceInfo] = useState<IPriceData>();
+
+    /* 내장함수 fetch만을 사용했을 때(.json()으로 가져오기)  */
+    // useEffect(() => {
+    //     (async () => {
+    //         const infoData = await (
+    //             await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+    //         ).json();
+    //         const priceData = await (
+    //             await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+    //         ).json();
+    //         setInfo(infoData);
+    //         console.log(infoData);
+    //         setPriceInfo(priceData);
+    //         console.log(priceData);
+    //         setLoading(false);
+    //     })();
+    // }, [coinId]);
+
+    /* axios 리아브러리 사용(.data로 가져오기) */
     useEffect(() => {
         (async () => {
-            const infoData = await (
-                await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-            ).json();
-            const priceData = await (
-                await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-            ).json();
-            setInfo(infoData);
-            setPriceInfo(priceData);
-            setLoading(false);
+            try {
+                const infoData = await axios.get(`https://api.coinpaprika.com/v1/coins/${coinId}`);
+                const priceData = await axios.get(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
+
+                setInfo(infoData.data);
+                setPriceInfo(priceData.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setLoading(false);
+            }
         })();
+
     }, [coinId]);
     return (
         <Container>

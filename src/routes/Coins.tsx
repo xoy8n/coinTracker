@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
+import axios from "axios";
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -64,14 +65,25 @@ interface CoinInterface{
 function Coins(){
     const [coins, setCoins] = useState<CoinInterface[]>([])
     const [loading, setLoading] = useState(true);
+    // useEffect(() => {
+    //     (async()=>{
+    //         const response = await fetch("https://api.coinpaprika.com/v1/coins");
+    //         const json = await response.json();
+    //         setCoins(json.slice(0,100));
+    //         setLoading(false);
+    //     })();
+    // }, [])
     useEffect(() => {
-        (async()=>{
-            const response = await fetch("https://api.coinpaprika.com/v1/coins");
-            const json = await response.json();
-            setCoins(json.slice(0,100));
-            setLoading(false);
+        (async () => {
+            try {
+                const response = await axios.get("https://api.coinpaprika.com/v1/coins");
+                setCoins(response.data.slice(0, 100));
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         })();
-    }, [])
+    }, []);
     return (
         <Container>
             <Header>
