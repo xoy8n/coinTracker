@@ -1,4 +1,4 @@
-import { Switch, Route, useParams} from "react-router"
+import { Switch, Route, useParams, useRouteMatch} from "react-router"
 import {useState, useEffect} from "react";
 import {Link, useLocation} from "react-router-dom";
 import axios from "axios";
@@ -67,10 +67,10 @@ const Tab = styled.span`
   font-size: 12px;
   font-weight: 400;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 7px 0;
   border-radius: 10px;
   a {
     display: block;
+      padding: 7px 0;
   }
 `;
 
@@ -152,6 +152,9 @@ function Coin() {
     const { state } = useLocation<RouteState>();
     const [info, setInfo] = useState<IInfoData>();
     const [priceInfo, setPriceInfo] = useState<IPriceData>();
+    /*useRouteMatch : 특정 urld에 내가 있는지 검사*/
+    const priceMatch = useRouteMatch('/:coinId/price')
+    console.log(priceMatch)
 
     /* 내장함수 fetch만을 사용했을 때(.json()으로 가져오기)  */
     // useEffect(() => {

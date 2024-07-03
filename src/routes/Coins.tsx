@@ -38,6 +38,8 @@ const Coin = styled.li`
 `
 
 const Title = styled.h1`
+    font-size: 50px;
+    font-weight: bold;
     color: ${props => props.theme.accentColor};
 `
 
@@ -65,6 +67,7 @@ interface CoinInterface{
 function Coins(){
     const [coins, setCoins] = useState<CoinInterface[]>([])
     const [loading, setLoading] = useState(true);
+
     // useEffect(() => {
     //     (async()=>{
     //         const response = await fetch("https://api.coinpaprika.com/v1/coins");
@@ -87,7 +90,7 @@ function Coins(){
     return (
         <Container>
             <Header>
-                <Title>코인</Title>
+                <Title>코인가게</Title>
             </Header>
             {loading ? (
                 <Loader>Loading...</Loader>
@@ -95,12 +98,11 @@ function Coins(){
                 <CoinsList>
                     {coins.map((coin) => (
                         <Coin key={coin.id}>
-                            <Link to={{
+                           <Link to={{
                                 pathname : `/${coin.id}`,
                                 state: {name: coin.name},
                             }}>
-                                <CoinImg src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
-                                />
+                                <CoinImg src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}/>
                                 {coin.name} &rarr;
                             </Link>
                         </Coin>
