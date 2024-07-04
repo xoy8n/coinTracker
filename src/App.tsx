@@ -1,6 +1,6 @@
-import Router from "./Router"
-import {createGlobalStyle} from "styled-components";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Router from "./Router";
+import { createGlobalStyle } from "styled-components";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const GlobalStyle = createGlobalStyle`
@@ -63,8 +63,8 @@ const GlobalStyle = createGlobalStyle`
   body{
       font-weight: 300;
     font-family: 'Source Sans Pro', sans-serif;
-    background-color: ${props => props.theme.bgColor};
-    color: ${props => props.theme.textColor};
+    background-color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.textColor};
       line-height: 1.2;
   }
   a{
@@ -73,16 +73,18 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const queryClient = new QueryClient({ /* options */})
+const queryClient = new QueryClient({
+  /* options */
+});
 
 function App() {
   return (
-      <QueryClientProvider client={queryClient}>
-        <GlobalStyle/>
-        <Router/>
-          <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-  )
+    <QueryClientProvider client={queryClient}>
+      <GlobalStyle />
+      <Router />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
