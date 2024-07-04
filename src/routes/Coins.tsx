@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -68,24 +68,26 @@ function Coins() {
   const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
-  //     (async()=>{
-  //         const response = await fetch("https://api.coinpaprika.com/v1/coins");
-  //         const json = await response.json();
-  //         setCoins(json.slice(0,100));
-  //         setLoading(false);
-  //     })();
-  // }, [])
+  //   (async () => {
+  //     const response = await fetch("https://api.coinpaprika.com/v1/coins");
+  //     const json = await response.json();
+  //     setCoins(json.slice(0, 100));
+  //     setLoading(false);
+  //   })();
+  // }, []);
   useEffect(() => {
     (async () => {
       try {
         const response = await axios.get(
-          "https://api.coinpaprika.com/v1/coins",
+          "https://api.openbrewerydb.org/v1/breweries?per_page=100",
         );
-        setCoins(response.data.slice(0, 100));
+        console.log("API response:", response.data);
+        setCoins(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+      console.log("Coins state:", coins);
     })();
   }, []);
   return (
@@ -97,21 +99,21 @@ function Coins() {
         <Loader>Loading...</Loader>
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
-            <Coin key={coin.id}>
-              <Link
-                to={{
-                  pathname: `/${coin.id}`,
-                  state: { name: coin.name },
-                }}
-              >
-                <CoinImg
-                  src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
-                />
-                {coin.name} &rarr;
-              </Link>
-            </Coin>
-          ))}
+          {/*{coins.map((coin) => (*/}
+          {/*  <Coin key={coin.id}>*/}
+          {/*    <Link*/}
+          {/*      to={{*/}
+          {/*        pathname: `/${coin.id}`,*/}
+          {/*        state: { name: coin.name },*/}
+          {/*      }}*/}
+          {/*    >*/}
+          {/*      <CoinImg*/}
+          {/*        src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}*/}
+          {/*      />*/}
+          {/*      {coin.name} &rarr;*/}
+          {/*    </Link>*/}
+          {/*  </Coin>*/}
+          {/*))}*/}
         </CoinsList>
       )}
     </Container>
