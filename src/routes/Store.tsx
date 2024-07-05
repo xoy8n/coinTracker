@@ -5,9 +5,10 @@ import axios from "axios";
 import styled from "styled-components";
 import Price from "./Price";
 import Chart from "./Chart";
+import { IStoreInterface } from "./Stores";
 
 interface RouteParams {
-  coinId: string;
+  storeId: string;
 }
 
 const Container = styled.div`
@@ -24,7 +25,8 @@ const Header = styled.header`
 `;
 
 const Title = styled.h1`
-  font-size: 50px;
+  text-align: center;
+  font-size: 40px;
   color: ${(props) => props.theme.accentColor};
 `;
 
@@ -78,79 +80,24 @@ interface RouteState {
   name: string;
 }
 
-interface ITag {
-  coin_counter: number;
-  ico_counter: number;
-  id: string;
-  name: string;
+interface IInfoData extends IStoreInterface {
+  address_1: string;
+  address_2?: string;
+  brewery_type: string;
+  city: string;
+  country: string;
+  phone: string;
+  state: string;
+  postal_code: string;
+  street: string;
+  website_url: string;
 }
 
-interface IInfoData {
-  id: string;
-  name: string;
-  symbol: string;
-  rank: number;
-  is_new: boolean;
-  is_active: boolean;
-  type: string;
-  logo: string;
-  tags: ITag[];
-  team: object;
-  description: string;
-  message: string;
-  open_source: boolean;
-  started_at: string;
-  development_status: string;
-  hardware_wallet: boolean;
-  proof_type: string;
-  org_structure: string;
-  hash_algorithm: string;
-  links: object;
-  links_extended: object;
-  whitepaper: object;
-  first_data_at: string;
-  last_data_at: string;
-}
-
-interface IPriceData {
-  id: string;
-  name: string;
-  symbol: string;
-  rank: number;
-  total_supply: number;
-  max_supply: number;
-  beta_value: number;
-  first_data_at: string;
-  last_updated: string;
-  quotes: {
-    USD: {
-      ath_date: string;
-      ath_price: number;
-      market_cap: number;
-      market_cap_change_24h: number;
-      percent_change_15m: number;
-      percent_change_30m: number;
-      percent_change_1h: number;
-      percent_change_6h: number;
-      percent_change_12h: number;
-      percent_change_24h: number;
-      percent_change_7d: number;
-      percent_change_30d: number;
-      percent_change_1y: number;
-      percent_from_price_ath: number;
-      price: number;
-      volume_24h: number;
-      volume_24h_change_24h: number;
-    };
-  };
-}
-
-function Coin() {
+function Store() {
   const [loading, setLoading] = useState(true);
-  const { coinId } = useParams<RouteParams>();
+  const { storeId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const [info, setInfo] = useState<IInfoData>();
-  const [priceInfo, setPriceInfo] = useState<IPriceData>();
   /*useRouteMatch : 특정 url에 내가 있는지 검사*/
   const priceMatch = useRouteMatch("/:coinId/price");
   console.log(priceMatch);
@@ -177,21 +124,16 @@ function Coin() {
     (async () => {
       try {
         const infoData = await axios.get(
-          `https://api.coinpaprika.com/v1/coins/${coinId}`,
+          `https://api.openbrewerydb.org/v1/breweries/${storeId}`,
         );
-        const priceData = await axios.get(
-          `https://api.coinpaprika.com/v1/tickers/${coinId}`,
-        );
-
         setInfo(infoData.data);
-        setPriceInfo(priceData.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
       }
     })();
-  }, [coinId]);
+  }, [storeId]);
   return (
     <Container>
       <Header>
@@ -204,44 +146,46 @@ function Coin() {
       ) : (
         <>
           <Overview>
-            <OverviewItem>
-              <span>Rank:</span>
-              <span>{info?.rank}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Symbol:</span>
-              <span>${info?.symbol}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Open Source:</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
-            </OverviewItem>
+            {/*<OverviewItem>*/}
+            {/*  <span>:</span>*/}
+            {/*  <span>{info?.rank}</span>*/}
+            {/*</OverviewItem>*/}
+            {/*<OverviewItem>*/}
+            {/*  <span>Symbol:</span>*/}
+            {/*  <span>${info?.symbol}</span>*/}
+            {/*</OverviewItem>*/}
+            {/*<OverviewItem>*/}
+            {/*  <span>Open Source:</span>*/}
+            {/*  <span>{info?.open_source ? "Yes" : "No"}</span>*/}
+            {/*</OverviewItem>*/}
           </Overview>
-          <Description>{info?.description}</Description>
+          <Description>{info?.website_url}</Description>
+          <Description>{`${info?.country}, ${info?.state}, ${info?.city}, ${info?.address_2}, ${info?.address_1}`}</Description>
+          <Description>{info?.phone}</Description>
           <Overview>
-            <OverviewItem>
-              <span>Total Supply:</span>
-              <span>{priceInfo?.total_supply}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
-            </OverviewItem>
+            {/*<OverviewItem>*/}
+            {/*  <span>Total Supply:</span>*/}
+            {/*  <span>{priceInfo?.total_supply}</span>*/}
+            {/*</OverviewItem>*/}
+            {/*<OverviewItem>*/}
+            {/*  <span>Max Supply:</span>*/}
+            {/*  <span>{priceInfo?.max_supply}</span>*/}
+            {/*</OverviewItem>*/}
           </Overview>
           <Tabs>
             <Tab>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link to={`/${storeId}/price`}>Price</Link>
             </Tab>
             <Tab>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+              <Link to={`/${storeId}/chart`}>Chart</Link>
             </Tab>
           </Tabs>
 
           <Switch>
-            <Route path={`/:coinId/price`}>
+            <Route path={`/:storeId/price`}>
               <Price />
             </Route>
-            <Route path={`/:coinId/chart`}>
+            <Route path={`/:storeId/chart`}>
               <Chart />
             </Route>
           </Switch>
@@ -251,4 +195,4 @@ function Coin() {
   );
 }
 
-export default Coin;
+export default Store;
