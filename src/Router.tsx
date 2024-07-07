@@ -1,18 +1,13 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Movie from "./routes/Store";
-import Movies from "./routes/Stores";
+import { BrowserRouter, Switch, Route, } from "react-router-dom";
+import Store from "./routes/Store";
+import Stores from "./routes/Stores";
 
 function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/:storeId">
-          <Movie />
-        </Route>
-
-        <Route path="/">
-          <Movies />
-        </Route>
+        <Route path="/:storeId" component={Store} />
+        <Route path="/" component={Stores}/>
       </Switch>
     </BrowserRouter>
   );

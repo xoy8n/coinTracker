@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { FC, useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { IStoreInterface } from "../types/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
@@ -55,75 +56,75 @@ const LoadMoreButton = styled.button`
   height: 50px;
 `;
 
-// const CoinImg = styled.img`
-//   width: 35px;
-//   height: 35px;
-// `;
 
-export interface IStoreInterface {
-  id: string;
-  name: string;
-}
 
-const fetchStores = async ({ pageParam }: { pageParam: number }) => {
-  const response = await axios.get(
-    `https://api.openbrewerydb.org/v1/breweries?by_country=south%20korea&per_page=${pageParam}`,
-  );
-  return response.data;
-};
+const Stores : FC<IStoreInterface> = ({ innerRef, id, name, ...props}) => {
 
-function Stores() {
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ["stores"],
-    queryFn: fetchStores,
-    initialPageParam: 10,
-    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
-  });
+    const {ref, inView} = useInView({
+
+    })
+    const [stores, setStores] = useState<IStoreInterface[]>([]);
+    const fetchStores = async ({pageParam} : {pageParam : number}) => {
+        const response = await axios.get(
+            `https://jsonplaceholder.typicode.com/posts/${pageParam}/comments`,
+        );
+        return response.data;
+    };
+
+    const { data, status, error, fetchNextPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
+        queryKey: ['stores'],
+        queryFn : fetchStores,
+        initialPageParam: 1,
+        getNextPageParam : (lastPage, allPages) => {
+            console.log({lastPage, allPages});
+            const nextPage = lastPage.length ? allPages.length + 1 : undefined;
+            return nextPage;
+        },
+        maxPages :5
+    })
+
+    const content = data?.pages.map((stores: IStoreInterface[]) => stores.map(store => {
+        return (
+            <Store ref={innerRef}  key={store.id} style={{ marginBottom: "20px" }}>
+                <Link
+                    to={{
+                         pathname: `/${store.id}`,
+                        state: { name: store.name},
+                    }}
+                    innerRef={ref}
+                >
+                    {store.name} &rarr;
+                </Link>
+            </Store>
+        )
+    }));
+
+    useEffect(() => {
+        if(inView && hasNextPage){
+            console.log("갱신갱신갱신")
+            fetchNextPage();
+        }
+    }, [inView, hasNextPage, fetchNextPage]);
+
+    if(status === 'pending'){
+        return <Loader>loading...</Loader>
+    }
+
+    if(status === 'error'){
+        return <p>Error : {error.message} </p>
+    }
 
   return (
-    <Container>
-      <Header>
-        <Title>🥃술집목록🍺</Title>
-      </Header>
-      {isFetching ? (
-        <Loader>Loading...</Loader>
-      ) : (
-        <StoresList>
-          {data?.pages.map((page) =>
-            page.map((store: IStoreInterface) => (
-              <Store key={store.id} style={{ marginBottom: "20px" }}>
-                <Link
-                  to={{
-                    pathname: `/${store.id}`,
-                    state: { name: store.name },
-                  }}
-                >
-                  {store.name} &rarr;
-                </Link>
-              </Store>
-            )),
-          )}
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetchingNextPage}
-          >
-            {isFetchingNextPage
-              ? "Loading more..."
-              : hasNextPage
-                ? "Load More"
-                : "Nothing more to load"}
-          </button>
-        </StoresList>
-      )}
-    </Container>
+      <Container>
+        <Header>
+          <Title>🥃술집목록🍺</Title>
+        </Header>
+            <StoresList>
+                {content}
+                {/*<button ref={ref} disabled={!hasNextPage || isFetchingNextPage} onClick={() => fetchNextPage()}>{isFetchingNextPage ? "불러오는중..." : hasNextPage ?  "더 보기" : "끝"}</button>*/}
+                {isFetchingNextPage && <h3>Loading~~</h3>}
+            </StoresList>
+      </Container>
   );
 }
 
