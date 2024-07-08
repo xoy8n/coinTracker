@@ -1,8 +1,11 @@
 import Router from "./Router";
+// (1) 전역스타일 함수 import
 import { createGlobalStyle } from "styled-components";
+// (2) tanstack/react-query 기본설정 함수 import
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+// (1-1) 전역 스타일 컴포넌트 생성
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
   /* http://meyerweb.com/eric/tools/css/reset/
@@ -79,10 +82,12 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
+    // (2-1) tanstack/react-query 기본설정(최상위 컴포넌트를 감싸도록)
     <QueryClientProvider client={queryClient}>
+      {/* (1-2) 최상위 컴포넌트에 추가 : 하위 모든 컴포넌트에 일괄 스타일 적용 */}
       <GlobalStyle />
       <Router />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   );
 }

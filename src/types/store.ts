@@ -1,5 +1,4 @@
-export interface IStoreInterface extends React.HtmlHTMLAttributes<HTMLElement> {
+export interface IStoreInterface {
   id: string;
   title: string;
-  innerRef: React.Ref<HTMLLIElement>;
 }

@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { fetchStores } from "../api";
 import styled from "styled-components";
 import { IStoreInterface } from "../types/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ const Header = styled.header`
   height: 15vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   align-items: center;
 `;
 
@@ -51,21 +52,8 @@ const Loader = styled.span`
   text-align: center;
 `;
 
-const LoadMoreButton = styled.button`
-  width: 300px;
-  height: 50px;
-`;
-
-const Stores: FC<IStoreInterface> = ({ innerRef, id, title, ...props }) => {
+const Stores = () => {
   const { ref, inView } = useInView({});
-  const [stores, setStores] = useState<IStoreInterface[]>([]);
-  const fetchStores = async ({ pageParam }: { pageParam: number }) => {
-    const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/todos?_page=${pageParam}`,
-    );
-    return response.data;
-  };
-
   const {
     data,
     status,
@@ -78,17 +66,18 @@ const Stores: FC<IStoreInterface> = ({ innerRef, id, title, ...props }) => {
     queryFn: fetchStores,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      console.log({ lastPage, allPages });
-      return lastPage.length ? allPages.length : undefined;
+      console.log(lastPage.length, allPages.length, lastPageParam);
+      return lastPage.length === allPages.length
+        ? undefined
+        : allPages.length + 1;
     },
-    maxPages: 4,
     staleTime: 10 * 60 * 1000, //10분
   });
 
   const content = data?.pages.map((stores: IStoreInterface[]) =>
     stores.map((store) => {
       return (
-        <Store ref={innerRef} key={store.id} style={{ marginBottom: "20px" }}>
+        <Store ref={ref} key={store.id} style={{ marginBottom: "20px" }}>
           <Link
             to={{
               pathname: `/${store.id}`,
@@ -105,7 +94,7 @@ const Stores: FC<IStoreInterface> = ({ innerRef, id, title, ...props }) => {
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      console.log("갱신갱신갱신");
+      console.log(inView, "무한 스크롤 요청 🎃", hasNextPage);
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
