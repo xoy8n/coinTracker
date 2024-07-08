@@ -79,73 +79,47 @@ interface RouteState {
 }
 
 export interface IInfoData extends React.HTMLAttributes<HTMLElement> {
-  store : IStoreInterface
-  address_1?: string;
-  address_2?: string;
-  city?: string;
-  phone?: string;
-  state?: string;
-  street?: string;
-  website_url?: string;
+  store: IStoreInterface;
+  body: string;
 }
 
-
-
-function Store(){
+function Store() {
   const [loading, setLoading] = useState(true);
   const { storeId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const [info, setInfo] = useState<IInfoData>();
   /*useRouteMatch : 특정 url에 내가 있는지 검사*/
-  const priceMatch = useRouteMatch("/:coinId/price");
-  console.log(priceMatch);
+  // const priceMatch = useRouteMatch("/:coinId/price");
+  // console.log(priceMatch);
 
-  /* axios 리아브러리 사용(.data로 가져오기) */
   useEffect(() => {
-    (async () => {
-      try {
-        const infoData = await axios.get(
-          `https://api.openbrewerydb.org/v1/breweries/${storeId}`,
-        );
-        setInfo(infoData.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    })();
+    const fetchDetailStore = async ({ pageParam }: { pageParam: string }) => {
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/posts/${pageParam}`,
+      );
+      // return response.data;
+      setInfo(response.data);
+      setLoading(false);
+    };
+    fetchDetailStore({ pageParam: storeId });
   }, [storeId]);
+
   return (
     <Container>
       <Header>
         <Title>
-          {state?.name ? state.name : loading ? "Loading..." : info?.store.name}
+          {state?.name
+            ? state.name
+            : loading
+              ? "Loading..."
+              : info?.store.title}
         </Title>
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Description>{info?.website_url}</Description>
-          <Description>{`${info?.state}, ${info?.city}, ${info?.address_2}, ${info?.address_1}`}</Description>
-          <Description>{info?.phone}</Description>
-          <Tabs>
-            <Tab>
-              <Link to={`/${storeId}/price`}>Price</Link>
-            </Tab>
-            <Tab>
-              <Link to={`/${storeId}/chart`}>Chart</Link>
-            </Tab>
-          </Tabs>
-
-          {/*<Switch>*/}
-          {/*  <Route path={`/:storeId/price`}>*/}
-          {/*    <Price />*/}
-          {/*  </Route>*/}
-          {/*  <Route path={`/:storeId/chart`}>*/}
-          {/*    <Chart />*/}
-          {/*  </Route>*/}
-          {/*</Switch>*/}
+          <Description>{info?.body}</Description>
         </>
       )}
     </Container>
