@@ -1,6 +1,6 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Store from "./routes/Store";
-import Stores from "./routes/Stores";
+import Store from "./pages/Store";
+import Stores from "./pages/Stores";
 
 function Router() {
   return (
@@ -10,8 +10,13 @@ function Router() {
       <Switch>
         {/*  react-router에서는 동적으로 변하는 path부분은 :123 이런식으로 작성해야함
         ${storeId} - 단순 문자열로 인식! */}
-        <Route path="/:storeId" component={Store} />
-        <Route path="/" component={Stores} />
+        {/*  더 알아와서 설먕하기 */}
+        <Route path="/:storeId">
+          <Store />
+        </Route>
+        <Route path="/">
+          <Stores />
+        </Route>
       </Switch>
     </BrowserRouter>
   );

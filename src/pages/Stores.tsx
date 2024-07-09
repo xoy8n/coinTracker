@@ -1,56 +1,17 @@
-import React, { FC, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { fetchStores } from "../api";
-import styled from "styled-components";
+import { fetchStores } from "../api/api";
+import {
+  Container,
+  Header,
+  StoresList,
+  Store,
+  Title,
+  Loader,
+} from "../style/StoresStyle";
 import { IStoreInterface } from "../types/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-
-const Container = styled.div`
-  padding: 0 20px;
-  max-width: 480px;
-  margin: 0 auto;
-`;
-
-const Header = styled.header`
-  height: 15vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-items: center;
-`;
-
-const StoresList = styled.ul``;
-
-const Store = styled.li`
-  background-color: white;
-  color: ${(props) => props.theme.bgColor};
-  margin-bottom: 10px;
-  border-radius: 15px;
-  a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 20px;
-    transition: color 0.2s ease-in;
-  }
-  &:hover {
-    a {
-      color: ${(props) => props.theme.accentColor};
-    }
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 50px;
-  font-weight: bold;
-  color: ${(props) => props.theme.accentColor};
-`;
-
-const Loader = styled.span`
-  display: block;
-  text-align: center;
-`;
 
 const Stores = () => {
   const { ref, inView } = useInView({});
@@ -61,8 +22,9 @@ const Stores = () => {
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
+    isLoading,
   } = useInfiniteQuery({
-    queryKey: ["stores"],
+    queryKey: ["allStores"],
     queryFn: fetchStores,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages, lastPageParam) => {
@@ -70,9 +32,13 @@ const Stores = () => {
       return lastPage.length === allPages.length
         ? undefined
         : allPages.length + 1;
+      // return lastPage.length ? allPages.length + 1 : undefined;
     },
+    gcTime: 20 * 60 * 10, //20분 (구 : cacheTime)
     staleTime: 10 * 60 * 1000, //10분
   });
+
+  console.log(data?.pages);
 
   const content = data?.pages.map((stores: IStoreInterface[]) =>
     stores.map((store) => {
@@ -83,7 +49,6 @@ const Stores = () => {
               pathname: `/${store.id}`,
               state: { name: store.title },
             }}
-            innerRef={ref}
           >
             {store.title} &rarr;
           </Link>
@@ -97,9 +62,9 @@ const Stores = () => {
       console.log(inView, "무한 스크롤 요청 🎃", hasNextPage);
       fetchNextPage();
     }
-  }, [inView, hasNextPage, fetchNextPage]);
+  }, [inView]);
 
-  if (status === "pending") {
+  if (isLoading) {
     return <Loader>loading...</Loader>;
   }
 
