@@ -32,7 +32,6 @@ const Stores = () => {
       return lastPage.length === allPages.length
         ? undefined
         : allPages.length + 1;
-      // return lastPage.length ? allPages.length + 1 : undefined;
     },
     gcTime: 20 * 60 * 10, //20분 (구 : cacheTime)
     staleTime: 10 * 60 * 1000, //10분
@@ -59,10 +58,10 @@ const Stores = () => {
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      console.log(inView, "무한 스크롤 요청 🎃", hasNextPage);
+      console.log(inView, "무한 스크롤 요청", hasNextPage);
       fetchNextPage();
     }
-  }, [inView]);
+  }, [inView, fetchNextPage, hasNextPage]);
 
   if (isLoading) {
     return <Loader>loading...</Loader>;
@@ -75,7 +74,7 @@ const Stores = () => {
   return (
     <Container>
       <Header>
-        <Title>명언목록</Title>
+        <Title>리스트</Title>
       </Header>
       <StoresList>
         {content}

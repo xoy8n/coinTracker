@@ -3,10 +3,14 @@ export interface IStoreInterface {
   title: string;
 }
 
-export type StoreRouteParams = {
-  storeId: string;
-};
+export interface IPageParam {
+  pageParam: number;
+}
 
-export type StoreRouteState = {
+export interface StoreRouteParams {
+  storeId: string;
+}
+
+export interface StoreRouteState {
   name: string;
-};
+}

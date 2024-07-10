@@ -1,8 +1,10 @@
 import axios from "axios";
+import { IPageParam } from "../types/store";
+
 const BASE_URL = `https://jsonplaceholder.typicode.com`;
 
 //아이템리스트목록 : 여러개의 아이템(객체)을 페이지단위로 가져옴
-export async function fetchStores({ pageParam }: { pageParam: number }) {
+export async function fetchStores({ pageParam }: IPageParam) {
   const response = await axios.get(`${BASE_URL}/posts?_page=${pageParam}`);
   return response.data;
 }
