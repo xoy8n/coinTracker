@@ -1,7 +1,6 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { GlobalStyle } from "./style/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Store from "./pages/Store";
 import Stores from "./pages/Stores";
 
@@ -23,7 +22,6 @@ function App() {
           </Route>
         </Switch>
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
