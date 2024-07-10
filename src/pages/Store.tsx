@@ -20,7 +20,6 @@ function Store() {
     queryKey: ["store", storeId],
     queryFn: () => fetchDetailStore(storeId),
     staleTime: 4 * 60 * 1000, //4분
-    gcTime: 1000, //1초
   });
 
   return (
