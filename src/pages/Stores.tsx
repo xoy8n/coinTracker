@@ -58,12 +58,7 @@ const Stores = () => {
   const content = data?.pages.map((stores: IStoreInterface[], index) =>
     stores.map((store) => (
       <Store key={store.id} style={{ marginBottom: "20px" }}>
-        <Link
-          to={{
-            pathname: `/${store.id}`,
-            state: { name: store.title },
-          }}
-        >
+        <Link to={`/${store.id}`} state={{ name: store.title }}>
           {store.title} &rarr;
         </Link>
       </Store>
