@@ -60,7 +60,6 @@ export async function deleteLikeStatus(bbsSeq: number) {
     // 쿼리 파라미터를 URL에 포함하여 삭제 요청
     const response = await axios.put(`${BASE_URL}/api/toy/like/cancel`, {
       data: {
-        // 본문에 bbsSeq와 likeSeq 포함
         bbsSeq,
       },
     });

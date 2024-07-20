@@ -12,6 +12,7 @@ import {
 import { IStoreInterface } from "../types/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import LikeButton from "../components/LikeButton";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 const Stores = () => {
   const {
@@ -33,33 +34,8 @@ const Stores = () => {
     staleTime: 10 * 60 * 1000, // 10분
   });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      console.log(
-        `innerHeight : ${window.innerHeight}, scrollY : ${window.scrollY}, 현재 페이지의 실제 높이 : ${document.body.offsetHeight}`,
-      );
-      if (
-        //브라우저 창 내부높이(사용자가 보는 브라우저창높이) + 스크롤 된 Y축 위치값 >= 현재 페이지의 모든 콘텐츠의 높이(브라우저에 보이지않는 페이지의 아이템끝까지의 길이)
-        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-        hasNextPage
-      ) {
-        console.log("onEndScroll, 다음페이지 블러오는중");
-        fetchNextPage();
-      }
-      console.log(hasNextPage, isFetchingNextPage);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      //eventListener 제거
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
-
-  if (isLoading) {
-    return <Loader>loading...</Loader>;
-  }
+  // 커스텀 훅을 사용하여 무한 스크롤 처리
+  useInfiniteScroll(hasNextPage, fetchNextPage);
 
   if (status === "error") {
     return <p>Error: {error.message}</p>;
@@ -81,14 +57,18 @@ const Stores = () => {
       <Header>
         <Title>리스트</Title>
       </Header>
-      <StoresList>
-        {content}
-        {isFetchingNextPage && hasNextPage ? (
-          <h3>로딩중...</h3>
-        ) : (
-          <h3>목록 끝!</h3>
-        )}
-      </StoresList>
+      {isLoading ? (
+        <Loader>Loading...</Loader>
+      ) : (
+        <StoresList>
+          {content}
+          {isFetchingNextPage && hasNextPage ? (
+            <h3>로딩중...</h3>
+          ) : (
+            <h3>목록 끝!</h3>
+          )}
+        </StoresList>
+      )}
     </Container>
   );
 };

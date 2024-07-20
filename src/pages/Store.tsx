@@ -1,12 +1,13 @@
 import React from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { fetchDetailStore, postLikeStatus } from "../api/api";
+import { fetchDetailStore } from "../api/api";
 import {
   Container,
   Header,
   Title,
   Loader,
   Description,
+  ContentBox,
 } from "../style/StoreStyle";
 import { useQuery } from "@tanstack/react-query";
 import LikeButton from "../components/LikeButton";
@@ -38,8 +39,10 @@ function Store() {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Description>{data?.data.contents}</Description>
-          <LikeButton storeId={bbsSeq} />
+          <ContentBox>
+            <Description>{data?.data.contents}</Description>
+            <LikeButton storeId={bbsSeq} />
+          </ContentBox>
         </>
       )}
     </Container>

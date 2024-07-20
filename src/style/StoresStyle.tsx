@@ -42,10 +42,6 @@ export const Store = styled.li`
     height: 30px;
   }
 `;
-export const LikeButtons = styled.button`
-  width: 100%;
-  flex: 1 0 20%;
-`;
 
 export const Title = styled.h1`
   font-size: 50px;

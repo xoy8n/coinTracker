@@ -26,10 +26,24 @@ export const Loader = styled.span`
 
 export const Description = styled.p`
   margin: 20px 0;
+  font-size: 20px;
 `;
-
+export const ContentBox = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  > button {
+    color: white;
+  }
+`;
 export const LikesButton = styled.button`
   display: block;
-  width: 100%;
+  flex: 0 1 20%;
   height: 50px;
+  border: none;
+  background: none;
+  svg {
+    height: 30px;
+  }
 `;
