@@ -1,5 +1,6 @@
 export interface IStoreInterface {
-  id: string;
+  likes: number;
+  bbsSeq: number;
   title: string;
 }
 
@@ -13,4 +14,9 @@ export interface StoreRouteParams {
 
 export interface StoreRouteState {
   name: string;
+}
+
+export interface ILikeProps {
+  likeSeq: number;
+  bbsSeq: number;
 }

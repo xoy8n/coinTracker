@@ -27,3 +27,9 @@ export const Loader = styled.span`
 export const Description = styled.p`
   margin: 20px 0;
 `;
+
+export const LikesButton = styled.button`
+  display: block;
+  width: 100%;
+  height: 50px;
+`;

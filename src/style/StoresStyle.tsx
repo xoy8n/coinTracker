@@ -21,6 +21,10 @@ export const Store = styled.li`
   color: ${(props) => props.theme.bgColor};
   margin-bottom: 10px;
   border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
   a {
     display: flex;
     align-items: center;
@@ -28,12 +32,19 @@ export const Store = styled.li`
     padding: 20px;
     transition: color 0.2s ease-in;
     min-height: 100px;
-  }
-  &:hover {
-    a {
+    width: 100%;
+    &:hover {
       color: ${(props) => props.theme.accentColor};
     }
   }
+  svg {
+    flex: 1 0 20%;
+    height: 30px;
+  }
+`;
+export const LikeButtons = styled.button`
+  width: 100%;
+  flex: 1 0 20%;
 `;
 
 export const Title = styled.h1`

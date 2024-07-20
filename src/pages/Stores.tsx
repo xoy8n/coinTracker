@@ -11,6 +11,7 @@ import {
 } from "../style/StoresStyle";
 import { IStoreInterface } from "../types/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import LikeButton from "../components/LikeButton";
 
 const Stores = () => {
   const {
@@ -25,8 +26,8 @@ const Stores = () => {
     queryKey: ["allStores"],
     queryFn: fetchStores,
     initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length ? allPages.length + 1 : undefined;
+    getNextPageParam: (lastPage) => {
+      return lastPage.data.hasNextPage ? lastPage.data.nextPage : undefined;
     },
     gcTime: 20 * 60 * 10, // 20분
     staleTime: 10 * 60 * 1000, // 10분
@@ -45,6 +46,7 @@ const Stores = () => {
         console.log("onEndScroll, 다음페이지 블러오는중");
         fetchNextPage();
       }
+      console.log(hasNextPage, isFetchingNextPage);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -53,17 +55,7 @@ const Stores = () => {
       //eventListener 제거
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [fetchNextPage, hasNextPage]);
-
-  const content = data?.pages.map((stores: IStoreInterface[], index) =>
-    stores.map((store) => (
-      <Store key={store.id} style={{ marginBottom: "20px" }}>
-        <Link to={`/${store.id}`} state={{ name: store.title }}>
-          {store.title} &rarr;
-        </Link>
-      </Store>
-    )),
-  );
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   if (isLoading) {
     return <Loader>loading...</Loader>;
@@ -72,6 +64,17 @@ const Stores = () => {
   if (status === "error") {
     return <p>Error: {error.message}</p>;
   }
+
+  const content = data?.pages.map((page) =>
+    page.data.list.map((store: IStoreInterface) => (
+      <Store key={store.bbsSeq} style={{ marginBottom: "20px" }}>
+        <Link to={`/${store.bbsSeq}`} state={{ name: store.title }}>
+          {store.title} &rarr;
+        </Link>
+        <LikeButton storeId={store.bbsSeq} />
+      </Store>
+    )),
+  );
 
   return (
     <Container>
