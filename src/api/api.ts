@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IPageParam, StoreRouteParams, ILikeProps } from "../types/store";
+import { IPageParam, StoreRouteParams } from "../types/store";
 
 const BASE_URL = `https://api.ssgpms.com`;
 
@@ -37,35 +37,36 @@ export async function fetchLikes(bbsSeq: number) {
     });
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch likes", error);
-    throw new Error("Failed to fetch likes");
+    console.error("에러메시지:", error);
+    throw new Error("api호출 실패!");
   }
 }
 
 // 좋아요 클릭 POST API
-export async function postLikeStatus(bbsSeq: number) {
+export async function postLikeStatus(bbsSeq: number, likeSeq: number) {
   try {
+    console.log(`Post : bbsSeq: ${bbsSeq}, likeSeq: ${likeSeq}`);
     await axios.post(`${BASE_URL}/api/toy/like`, {
       bbsSeq,
+      likeSeq,
     });
   } catch (error) {
-    console.error("Failed to post like status", error);
-    throw new Error("Failed to post like status");
+    console.error("에러메시지:", error);
+    throw new Error("POST요청 실패!");
   }
 }
 
 // 좋아요 취소 PUT API
-export async function deleteLikeStatus(bbsSeq: number) {
+export async function deleteLikeStatus(bbsSeq: number, likeSeq: number) {
+  console.log(`Put : bbsSeq: ${bbsSeq}, likeSeq: ${likeSeq}`);
   try {
-    // 쿼리 파라미터를 URL에 포함하여 삭제 요청
     const response = await axios.put(`${BASE_URL}/api/toy/like/cancel`, {
-      data: {
-        bbsSeq,
-      },
+      bbsSeq,
+      likeSeq,
     });
     return response.data;
   } catch (error) {
-    console.error("Failed to delete like status", error);
-    throw new Error("Failed to delete like status");
+    console.error("에러메시지", error);
+    throw new Error("PUT요청 실패");
   }
 }

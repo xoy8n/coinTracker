@@ -12,10 +12,6 @@ const useInfiniteScroll = (hasNextPage: boolean, fetchNextPage: () => void) => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
   }, [fetchNextPage, hasNextPage]);
 };
 

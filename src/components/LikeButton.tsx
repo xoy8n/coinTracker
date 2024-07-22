@@ -1,5 +1,5 @@
 import React from "react";
-import { postLikeStatus, deleteLikeStatus } from "../api/api";
+import { postLikeStatus, deleteLikeStatus, fetchLikes } from "../api/api";
 import { LikesButton } from "../style/StoreStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
@@ -16,11 +16,14 @@ const LikeButton: React.FC<LikeButtonProps> = ({ storeId }) => {
   const handleLikeToggle = async () => {
     try {
       if (!liked) {
-        await postLikeStatus(storeId);
+        await postLikeStatus(storeId, 1);
+        await fetchLikes(storeId);
       } else {
-        await deleteLikeStatus(storeId);
+        await deleteLikeStatus(storeId, 0);
+        await fetchLikes(storeId);
       }
-      toggleLike(storeId); // 상태를 토글
+      toggleLike(storeId);
+      console.log(likedStores);
     } catch (error) {
       console.error("상태변경 불가 에러 :", error);
     }

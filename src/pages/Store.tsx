@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { fetchDetailStore } from "../api/api";
+import { fetchDetailStore, fetchLikes } from "../api/api";
 import {
   Container,
   Header,
