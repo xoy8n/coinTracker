@@ -35,7 +35,7 @@ const Stores = () => {
   });
 
   // 커스텀 훅을 사용하여 무한 스크롤 처리
-  useInfiniteScroll(hasNextPage, fetchNextPage);
+  useInfiniteScroll(hasNextPage, fetchNextPage, isFetchingNextPage);
 
   if (status === "error") {
     return <p>Error: {error.message}</p>;

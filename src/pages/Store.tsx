@@ -26,7 +26,7 @@ function Store() {
       }
       return fetchDetailStore({ storeId });
     },
-    staleTime: 4 * 60 * 1000, // 4분
+    // staleTime: 4 * 60 * 1000, // 4분
     gcTime: 20 * 60 * 1000,
   });
 
