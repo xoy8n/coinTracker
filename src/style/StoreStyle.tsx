@@ -34,7 +34,7 @@ export const ContentBox = styled.div`
   align-items: center;
   justify-content: space-between;
   > button {
-    color: white;
+    color: red;
   }
 `;
 export const LikesButton = styled.button`

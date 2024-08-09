@@ -24,7 +24,8 @@ export const Store = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
+  padding-right: 20px;
   a {
     display: flex;
     align-items: center;
@@ -37,9 +38,12 @@ export const Store = styled.li`
       color: ${(props) => props.theme.accentColor};
     }
   }
-  svg {
-    flex: 1 0 20%;
-    height: 30px;
+  button {
+    color: red;
+    svg {
+      flex: 1 0 20%;
+      height: 30px;
+    }
   }
 `;
 

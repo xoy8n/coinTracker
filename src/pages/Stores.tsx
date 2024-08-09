@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { fetchStores } from "../api/api";
+import { fetchLikeStores, fetchStores } from "../api/api";
 import {
   Container,
   Header,
@@ -64,9 +64,7 @@ const Stores = () => {
             )),
           )}
           {isFetchingNextPage && hasNextPage ? (
-            <>
-              <h3>로딩중...</h3>
-            </>
+            <h3>로딩중...</h3>
           ) : (
             <h3>목록 끝!</h3>
           )}

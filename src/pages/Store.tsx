@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { fetchDetailStore } from "../api/api";
+import { fetchDetailStore, fetchLikeStores } from "../api/api";
 import {
   Container,
   Header,
@@ -13,6 +13,7 @@ import {
 } from "../style/StoreStyle";
 import { useQuery } from "@tanstack/react-query";
 import LikeButton from "../components/LikeButton";
+import { IStoreInterface } from "../types/store";
 
 function Store() {
   //URL경로매개변수는 항상 문자열을 반환(parseInt, Number 를 쓰지 않고는 숫자로 타입지정안됨)

@@ -42,3 +42,16 @@ export async function postLikeStatus(
   });
   return response.data;
 }
+
+//좋아요 목록 조회 api
+export async function fetchLikeStores({ storeId }: StoreRouteParams) {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/toy/bbs/detail?bbsSeq=${storeId}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("에러메시지:", error);
+    throw new Error("api호출 실패!");
+  }
+}
