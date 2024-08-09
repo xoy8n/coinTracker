@@ -7,7 +7,7 @@ const BASE_URL = `https://api.ssgpms.com`;
 export async function fetchStores({ pageParam }: IPageParam) {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/toy/bbs?currentPage=${pageParam}`,
+      `${BASE_URL}/api/toy/bbs?currentPage=${pageParam}&employeeSeq=1`,
     );
     return response.data;
   } catch (error) {
@@ -20,7 +20,7 @@ export async function fetchStores({ pageParam }: IPageParam) {
 export async function fetchDetailStore({ storeId }: StoreRouteParams) {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/toy/bbs/detail?bbsSeq=${storeId}`,
+      `${BASE_URL}/api/toy/bbs/detail?bbsSeq=${storeId}&employeeSeq=1`,
     );
     return response.data;
   } catch (error) {
@@ -29,44 +29,16 @@ export async function fetchDetailStore({ storeId }: StoreRouteParams) {
   }
 }
 
-// 좋아요 목록을 가져오는 API
-export async function fetchLikes(bbsSeq: number) {
-  try {
-    const response = await axios.get(`${BASE_URL}/api/toy/likes`, {
-      params: { bbsSeq },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("에러메시지:", error);
-    throw new Error("api호출 실패!");
-  }
-}
-
-// 좋아요 클릭 POST API
-export async function postLikeStatus(bbsSeq: number, likeSeq: number) {
-  try {
-    console.log(`Post : bbsSeq: ${bbsSeq}, likeSeq: ${likeSeq}`);
-    await axios.post(`${BASE_URL}/api/toy/like`, {
-      bbsSeq,
-      likeSeq,
-    });
-  } catch (error) {
-    console.error("에러메시지:", error);
-    throw new Error("POST요청 실패!");
-  }
-}
-
-// 좋아요 취소 PUT API
-export async function deleteLikeStatus(bbsSeq: number, likeSeq: number) {
-  console.log(`Put : bbsSeq: ${bbsSeq}, likeSeq: ${likeSeq}`);
-  try {
-    const response = await axios.put(`${BASE_URL}/api/toy/like/cancel`, {
-      bbsSeq,
-      likeSeq,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("에러메시지", error);
-    throw new Error("PUT요청 실패");
-  }
+//좋아요 등록,취소 post api
+export async function postLikeStatus(
+  bbsSeq: number,
+  employeeSeq: number,
+  likeYn: boolean,
+) {
+  const response = await axios.post(`${BASE_URL}/api/toy/like`, {
+    bbsSeq,
+    employeeSeq,
+    likeYn,
+  });
+  return response.data;
 }

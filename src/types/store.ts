@@ -1,4 +1,5 @@
 export interface IStoreInterface {
+  likeYn: "Y" | "N";
   likes: number;
   bbsSeq: number;
   title: string;

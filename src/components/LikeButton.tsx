@@ -1,42 +1,33 @@
 import React from "react";
-import {
-  postLikeStatus,
-  deleteLikeStatus,
-  fetchLikes,
-  fetchDetailStore,
-} from "../api/api";
-import { LikesButton } from "../style/StoreStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
-import { useLikeStore } from "../store/likeStore";
+import { postLikeStatus } from "../api/api";
+import { LikesButton } from "../style/StoreStyle";
+import { IStoreInterface } from "../types/store";
 
 interface LikeButtonProps {
-  storeId: number;
+  store: IStoreInterface;
+  refetch: () => void;
 }
 
-const LikeButton: React.FC<LikeButtonProps> = ({ storeId }) => {
-  const { likedStores, toggleLike } = useLikeStore();
-  const liked = likedStores[storeId];
+const LikeButton: React.FC<LikeButtonProps> = ({ store, refetch }) => {
+  const isLiked = store.likeYn === "Y";
 
   const handleLikeToggle = async () => {
     try {
-      if (!liked) {
-        await postLikeStatus(storeId, 1);
-        await fetchLikes(storeId);
-      } else {
-        await deleteLikeStatus(storeId, 0);
-        await fetchLikes(storeId);
-      }
-      toggleLike(storeId);
-      console.log(likedStores);
+      // 좋아요 상태 업데이트
+      await postLikeStatus(store.bbsSeq, 1, !isLiked);
+
+      // refetch 함수 호출
+      refetch();
     } catch (error) {
-      console.error("상태변경 불가 에러 :", error);
+      console.error("상태 변경 불가 에러:", error);
     }
   };
 
   return (
     <LikesButton onClick={handleLikeToggle}>
-      <FontAwesomeIcon icon={liked ? faHeart : faHeartBroken} />
+      <FontAwesomeIcon icon={isLiked ? faHeart : faHeartBroken} />
     </LikesButton>
   );
 };

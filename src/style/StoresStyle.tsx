@@ -53,3 +53,8 @@ export const Loader = styled.span`
   display: block;
   text-align: center;
 `;
+export const LikeCount = styled.span`
+  display: block;
+  font-weight: bold;
+  font-size: 30px;
+`;

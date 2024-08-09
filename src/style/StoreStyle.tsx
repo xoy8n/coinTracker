@@ -47,3 +47,18 @@ export const LikesButton = styled.button`
     height: 30px;
   }
 `;
+export const LikeCountComment = styled.p`
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  font-size: 25px;
+  color: white;
+  margin-top: 20px;
+`;
+export const LikeCount = styled.span`
+  display: block;
+  font-size: 30px;
+  font-weight: bold;
+  color: inherit;
+`;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { fetchDetailStore, fetchLikes } from "../api/api";
+import { fetchDetailStore } from "../api/api";
 import {
   Container,
   Header,
@@ -8,6 +8,8 @@ import {
   Loader,
   Description,
   ContentBox,
+  LikeCountComment,
+  LikeCount,
 } from "../style/StoreStyle";
 import { useQuery } from "@tanstack/react-query";
 import LikeButton from "../components/LikeButton";
@@ -16,9 +18,8 @@ function Store() {
   //URL경로매개변수는 항상 문자열을 반환(parseInt, Number 를 쓰지 않고는 숫자로 타입지정안됨)
   const { storeId } = useParams<{ storeId: string }>();
   const location = useLocation();
-  const bbsSeq = Number(storeId);
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, refetch } = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => {
       if (!storeId) {
@@ -26,8 +27,6 @@ function Store() {
       }
       return fetchDetailStore({ storeId });
     },
-    // staleTime: 4 * 60 * 1000, // 4분
-    gcTime: 20 * 60 * 1000,
   });
 
   return (
@@ -41,8 +40,12 @@ function Store() {
         <>
           <ContentBox>
             <Description>{data?.data.contents}</Description>
-            <LikeButton storeId={bbsSeq} />
+            <LikeButton store={data.data} refetch={refetch} />
           </ContentBox>
+          <LikeCountComment>
+            <LikeCount>{data?.data.likes}</LikeCount>
+            {data?.data.likes === 0 ? "명이 좋아합니다🥺" : "명이 좋아합니다🥰"}
+          </LikeCountComment>
         </>
       )}
     </Container>
