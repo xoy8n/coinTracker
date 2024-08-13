@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { fetchLikeStores, fetchStores } from "../api/api";
+import { fetchStores } from "../api/api";
 import {
   Container,
   Header,
@@ -54,8 +54,11 @@ const Stores = () => {
         <StoresList>
           {data?.pages.map((page) =>
             page.data.list.map((store: IStoreInterface) => (
-              <Store key={store.bbsSeq} style={{ marginBottom: "20px" }}>
-                <Link to={`/${store.bbsSeq}`} state={{ name: store.title }}>
+              <Store key={store.bbsSeq}>
+                <Link
+                  to={`/${store.bbsSeq}`}
+                  state={{ name: store.title, isStoresLiked: store.likeYn }}
+                >
                   {store.title} &rarr;
                 </Link>
                 <LikeButton store={store} refetch={refetch} />

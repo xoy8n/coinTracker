@@ -19,13 +19,13 @@ export const StoresList = styled.ul``;
 export const Store = styled.li`
   background-color: white;
   color: ${(props) => props.theme.bgColor};
-  margin-bottom: 10px;
   border-radius: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   padding-right: 20px;
+  margin-bottom: 20px;
   a {
     display: flex;
     align-items: center;

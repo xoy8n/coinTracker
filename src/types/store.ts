@@ -13,11 +13,8 @@ export interface StoreRouteParams {
   storeId: string;
 }
 
-export interface StoreRouteState {
-  name: string;
-}
-
-export interface ILikeProps {
-  likeSeq: number;
+export interface IlikeProps {
   bbsSeq: number;
+  employeeSeq: number;
+  likeYn: boolean;
 }

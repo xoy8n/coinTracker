@@ -16,8 +16,11 @@ const LikeButton: React.FC<LikeButtonProps> = ({ store, refetch }) => {
   const handleLikeToggle = async () => {
     try {
       // 좋아요 상태 업데이트
-      await postLikeStatus(store.bbsSeq, 1, !isLiked);
-
+      await postLikeStatus({
+        bbsSeq: store.bbsSeq,
+        employeeSeq: 1,
+        likeYn: !isLiked,
+      });
       // refetch 함수 호출
       refetch();
     } catch (error) {
