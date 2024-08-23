@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { fetchDetailStore } from "../api/api";
 import {
   Container,

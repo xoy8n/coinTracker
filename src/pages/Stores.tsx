@@ -31,7 +31,7 @@ const Stores = () => {
     getNextPageParam: (lastPage) => {
       return lastPage.data.hasNextPage ? lastPage.data.nextPage : undefined;
     },
-    gcTime: 20 * 60 * 10, // 20분
+    gcTime: 20 * 60 * 1000, // 20분
     staleTime: 10 * 60 * 1000, // 10분
   });
 
