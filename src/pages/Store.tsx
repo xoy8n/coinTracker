@@ -39,7 +39,6 @@ function Store() {
         <>
           <ContentBox>
             <Description>{data?.data.contents}</Description>
-            <p>{location.state.isLiked}</p>
             <LikeButton store={data.data} refetch={refetch} />
           </ContentBox>
           <LikeCountComment>
