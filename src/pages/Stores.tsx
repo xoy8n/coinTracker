@@ -42,12 +42,10 @@ const Stores = () => {
 
   //좋아요 버튼을 눌렀을 때만 무한쿼리 Refetch
   useEffect(() => {
-    // return () => {
     if (refetchYn) {
       refetch();
     }
     setRefetchYn(false);
-    // };
   }, [refetchYn]);
 
   return (
