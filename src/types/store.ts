@@ -16,5 +16,5 @@ export interface StoreRouteParams {
 export interface IlikeProps {
   bbsSeq: number;
   employeeSeq: number;
-  likeYn: boolean;
+  likeYn?: boolean;
 }

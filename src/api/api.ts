@@ -30,16 +30,11 @@ export async function fetchDetailStore({ storeId }: StoreRouteParams) {
 }
 
 //좋아요 등록,취소 post api
-export async function postLikeStatus({
-  bbsSeq,
-  employeeSeq,
-  likeYn,
-}: IlikeProps) {
+export async function postLikeStatus({ bbsSeq, employeeSeq }: IlikeProps) {
   try {
     const response = await axios.post(`${BASE_URL}/api/toy/like`, {
       bbsSeq,
       employeeSeq,
-      likeYn,
     });
     return response.data;
   } catch (error) {

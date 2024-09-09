@@ -11,7 +11,6 @@ export const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  align-items: center;
 `;
 
 export const StoresList = styled.ul``;
