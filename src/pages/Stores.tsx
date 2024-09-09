@@ -62,10 +62,7 @@ const Stores = () => {
           {data?.pages.map((page) =>
             page.data.list.map((store: IStoreInterface) => (
               <Store key={store.bbsSeq}>
-                <Link
-                  to={`/${store.bbsSeq}`}
-                  state={{ name: store.title, isStoresLiked: store.likeYn }}
-                >
+                <Link to={`/${store.bbsSeq}`} state={{ name: store.title }}>
                   {store.title} &rarr;
                 </Link>
                 <LikeButton store={store} refetch={refetch} />

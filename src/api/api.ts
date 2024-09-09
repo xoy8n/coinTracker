@@ -35,10 +35,15 @@ export async function postLikeStatus({
   employeeSeq,
   likeYn,
 }: IlikeProps) {
-  const response = await axios.post(`${BASE_URL}/api/toy/like`, {
-    bbsSeq,
-    employeeSeq,
-    likeYn,
-  });
-  return response.data;
+  try {
+    const response = await axios.post(`${BASE_URL}/api/toy/like`, {
+      bbsSeq,
+      employeeSeq,
+      likeYn,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("에러메시지:", error);
+    throw new Error("api POST 실패!");
+  }
 }
