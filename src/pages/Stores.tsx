@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { fetchStores } from "../api/api";
 import {
   Container,
@@ -14,9 +14,10 @@ import { IStoreInterface } from "../types/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import LikeButton from "../components/LikeButton";
+import useLikeButtonRefetchStore from "../stores/likeButtonRefetchStore";
 
 const Stores = () => {
-  const location = useLocation();
+  const { refetchYn, setRefetchYn } = useLikeButtonRefetchStore();
   const {
     data,
     fetchNextPage,
@@ -31,17 +32,23 @@ const Stores = () => {
     getNextPageParam: (lastPage) => {
       return lastPage.data.hasNextPage ? lastPage.data.nextPage : undefined;
     },
-    gcTime: 20 * 60 * 1000, // 20분
-    staleTime: 10 * 60 * 1000, // 10분
+    // gcTime: 20 * 60 * 1000, // 20분
+    // staleTime: 10 * 60 * 1000, // 10분
+    refetchOnMount: refetchYn,
   });
 
   // 커스텀 훅을 사용하여 무한 스크롤 처리
   useInfiniteScroll(hasNextPage, fetchNextPage, isFetchingNextPage);
 
+  //좋아요 버튼을 눌렀을 때만 무한쿼리 Refetch
   useEffect(() => {
-    // Location 객체가 변경될 때마다 refetch 호출
-    refetch();
-  }, [location]);
+    return () => {
+      if (refetchYn) {
+        refetch();
+      }
+      setRefetchYn(false);
+    };
+  }, []);
 
   return (
     <Container>

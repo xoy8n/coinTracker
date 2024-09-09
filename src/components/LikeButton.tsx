@@ -4,6 +4,7 @@ import { faHeart, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
 import { postLikeStatus } from "../api/api";
 import { LikesButton } from "../style/StoreStyle";
 import { IStoreInterface } from "../types/store";
+import useLikeButtonRefetchStore from "../stores/likeButtonRefetchStore";
 
 interface LikeButtonProps {
   store: IStoreInterface;
@@ -12,6 +13,7 @@ interface LikeButtonProps {
 
 const LikeButton: React.FC<LikeButtonProps> = ({ store, refetch }) => {
   const isLiked = store.likeYn === "Y";
+  const { setRefetchYn } = useLikeButtonRefetchStore();
 
   const handleLikeToggle = async () => {
     try {
@@ -21,7 +23,8 @@ const LikeButton: React.FC<LikeButtonProps> = ({ store, refetch }) => {
         employeeSeq: 1,
         likeYn: !isLiked,
       });
-      // refetch 함수 호출
+      //좋아요 버튼 클릭을 전역으로 관찰
+      setRefetchYn(true);
       refetch();
     } catch (error) {
       console.error("상태 변경 불가 에러:", error);
